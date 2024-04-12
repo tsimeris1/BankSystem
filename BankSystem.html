@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h2>ATM System</h2>
+    <div id="pinEntry">
+        <label for="pin">Enter PIN:</label>
+        <input type="password" id="pin" maxlength="4">
+        <br>
+        <button onclick="validatePin()">Submit</button>
+    </div>
+
+    <div id="transactionOptions" style="display: none;">
+        <h3>Welcome!</h3>
+        <button onclick="checkBalance()">Check Balance</button>
+        <button onclick="withdraw()">Withdraw</button>
+        <button onclick="deposit()">Deposit</button>
+        <br>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="balance" style="display: none;">
+        <h3>Your Balance:</h3>
+        <p id="balanceAmount">$0.00</p>
+        <button onclick="backToOptions()">Back</button>
+    </div>
+
+    <div id="withdraw" style="display: none;">
+        <h3>Withdraw Money</h3>
+        <label for="withdrawAmount">Enter amount:</label>
+        <input type="number" id="withdrawAmount" min="1">
+        <br>
+        <button onclick="confirmWithdraw()">Withdraw</button>
+        <button onclick="backToOptions()">Cancel</button>
+    </div>
+
+    <div id="deposit" style="display: none;">
+        <h3>Deposit Money</h3>
+        <label for="depositAmount">Enter amount:</label>
+        <input type="number" id="depositAmount" min="1">
+        <br>
+        <button onclick="confirmDeposit()">Deposit</button>
+        <button onclick="backToOptions()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    let pin = "1234"; // Replace with a secure PIN validation mechanism
+    let balance = 1000;
+
+    function validatePin() {
+        let enteredPin = document.getElementById("pin").value;
+        if (enteredPin === pin) {
+            document.getElementById("pinEntry").style.display = "none";
+            document.getElementById("transactionOptions").style.display = "block";
+        } else {
+            alert("Invalid PIN. Please try again.");
+        }
+    }
+
+    function checkBalance() {
+        document.getElementById("transactionOptions").style.display = "none";
+        document.getElementById("balance").style.display = "block";
+        document.getElementById("balanceAmount").innerText = "$" + balance.toFixed(2);
+    }
+
+    function withdraw() {
+        document.getElementById("transactionOptions").style.display = "none";
+        document.getElementById("withdraw").style.display = "block";
+    }
+
+    function confirmWithdraw() {
+        let withdrawAmount = parseFloat(document.getElementById("withdrawAmount").value);
+        if (withdrawAmount > 0 && withdrawAmount <= balance) {
+            balance -= withdrawAmount;
+            alert("Withdrawal successful. New balance: $" + balance.toFixed(2));
+            backToOptions();
+        } else {
+            alert("Invalid amount or insufficient funds. Please try again.");
+        }
+    }
+
+    function deposit() {
+        document.getElementById("transactionOptions").style.display = "none";
+        document.getElementById("deposit").style.display = "block";
+    }
+
+    function confirmDeposit() {
+        let depositAmount = parseFloat(document.getElementById("depositAmount").value);
+        if (depositAmount > 0) {
+            balance += depositAmount;
+            alert("Deposit successful. New balance: $" + balance.toFixed(2));
+            backToOptions();
+        } else {
+            alert("Invalid amount. Please try again.");
+        }
+    }
+
+    function backToOptions() {
+        document.getElementById("balance").style.display = "none";
+        document.getElementById("withdraw").style.display = "none";
+        document.getElementById("deposit").style.display = "none";
+        document.getElementById("transactionOptions").style.display = "block";
+    }
+
+    function logout() {
+        document.getElementById("pinEntry").style.display = "block";
+        document.getElementById("transactionOptions").style.display = "none";
+        document.getElementById("balance").style.display = "none";
+        document.getElementById("withdraw").style.display = "none";
+        document.getElementById("deposit").style.display = "none";
+        document.getElementById("pin").value = "";
+    }
+</script>
+
+</body>
+</html>
